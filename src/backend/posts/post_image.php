@@ -48,7 +48,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $image_url = $baseUrl . $uploadPath . basename($_FILES["fileToUpload"]["name"]);
 
             $comment = $conn->real_escape_string($_POST['comment']);
-            $user_id = $_SESSION['user_id']; // Assumindo que você armazena o ID do usuário na sessão
+            $user_id = $_SESSION['user_id'];
 
             // Inserir no banco de dados
             $sql = "INSERT INTO posts (user_id, image_url, comment, post_timestamp) VALUES ('$user_id', '$image_url', '$comment', NOW())";

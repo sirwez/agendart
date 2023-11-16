@@ -4,7 +4,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto"> <!-- Links alinhados à esquerda -->
+        <ul class="navbar-nav mr-auto"> 
             <?php if (isset($_SESSION['loggedin'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost/agendart/posts/upload">Criar Postagem</a>
@@ -14,7 +14,7 @@
                 </li>
             <?php endif; ?>
         </ul>
-        <ul class="navbar-nav"> <!-- Links alinhados à direita -->
+        <ul class="navbar-nav">
             <?php if (!isset($_SESSION['loggedin'])) : ?>
                 <li class="nav-item">
                     <a class="nav-link" href="http://localhost/agendart/auth/register-page">Registrar</a>
@@ -24,7 +24,7 @@
                 </li>
             <?php else : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/logout">Deslogar</a>
+                    <a class="nav-link" href="http://localhost/agendart/auth/logout">Sair</a>
                 </li>
             <?php endif; ?>
         </ul>

@@ -7,27 +7,44 @@ session_start();
 <?php include '../partials/header.php'; ?>
 
 <body>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            /* Cor de fundo suave */
+        }
+
+        .card {
+            margin-top: 100px;
+            /* Espaçamento do topo */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            /* Sombra para o card */
+        }
+    </style>
     <?php include '../partials/navbar.php'; ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-12">
-                <form id="registerForm" class="mt-5">
-                    <h2 class="text-center">Registrar</h2>
-                    <div class="form-group">
-                        <label for="username">Nome de Usuário:</label>
-                        <input type="text" name="username" class="form-control" required>
+                <div class="card">
+                    <div class="card-body">
+                        <h2 class="text-center mb-4">Registrar</h2>
+                        <form id="registerForm">
+                            <div class="form-group">
+                                <label for="username">Nome de Usuário:</label>
+                                <input type="text" name="username" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" name="email" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Senha:</label>
+                                <input type="password" name="password" class="form-control" id="passwordInput" required>
+                                <small id="passwordHelp" class="form-text text-muted"></small>
+                            </div>
+                            <button type="button" onclick="submitForm()" class="btn btn-primary btn-block">Registrar</button>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email:</label>
-                        <input type="email" name="email" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password">Senha:</label>
-                        <input type="password" name="password" class="form-control" id="passwordInput" required>
-                        <small id="passwordHelp" class="form-text text-muted"></small>
-                    </div>
-                    <button type="button" onclick="submitForm()" class="btn btn-primary btn-block">Registrar</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -83,7 +100,7 @@ session_start();
 
             $.ajax({
                 type: "POST",
-                url: "http://localhost/agendart/auth/register", // Ajuste conforme o caminho correto do seu endpoint
+                url: "http://localhost/agendart/auth/register", 
                 data: {
                     username: username,
                     email: email,
@@ -92,7 +109,7 @@ session_start();
                 dataType: "json",
                 success: function(response) {
                     if (response.error) {
-                        alert(response.message); // Exibe mensagem de erro
+                        alert(response.message);
                     } else {
                         window.location.href = 'http://localhost/agendart/auth/login-page'; // Redireciona para login
                     }

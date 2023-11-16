@@ -15,7 +15,7 @@ $result = $conn->query($sql);
 $posts = [];
 if ($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
-        // Consulta para buscar o nome de usuário baseado no user_id
+        // Consulta para buscar o nome de usuário baseado no user_id do post
         $userSql = "SELECT username FROM users WHERE id = " . $row['user_id'];
         $userResult = $conn->query($userSql);
         $username = "";
@@ -27,7 +27,7 @@ if ($result->num_rows > 0) {
 
         $posts[] = [
             'id' => $row["id"],
-            'username' => $username, // Incluído o nome de usuário obtido pela consulta separada
+            'username' => $username,
             'image_url' => htmlspecialchars($row["image_url"]),
             'comment' => $row["comment"],
             'post_timestamp' => $row["post_timestamp"]

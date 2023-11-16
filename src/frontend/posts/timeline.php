@@ -10,18 +10,18 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 <body>
     <style>
-        /* Estilo para o container da imagem */
+        /* Container da imagem */
         .image-container {
             position: relative;
             cursor: pointer;
         }
 
-        /* Estilo para esmaecer a imagem */
+        /* Esmaecer a imagem */
         .image-container img:hover {
             opacity: 0.7;
         }
 
-        /* Estilo para o texto de sobreposição */
+        /* Texto de sobreposição */
         .overlay-text {
             position: absolute;
             top: 50%;
@@ -61,24 +61,24 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     var postsHtml = '';
                     posts.forEach(function(post) {
                         postsHtml += `
-        <div class="card mb-3" style="padding: 10px;">
-            <div class="row no-gutters">
-                <div class="col-md-6">
-                    <div class="image-container" onclick="viewImage('${post.image_url}')">
-                        <img src="${post.image_url}" class="card-img" alt="Imagem da Postagem" style="max-height: 150px; object-fit: cover; width: 100%;">
-                        <div class="overlay-text">Clique para expandir</div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card-body" style="padding: 5px;">
-                        <h6 class="card-title" style="margin-bottom: 0;">${post.username}</h6>
-                        <p style="font-style: italic; margin-bottom: 5px; font-size: 0.8em;">${new Date(post.post_timestamp).toLocaleString()}</p>
-                        <p class="card-text" style="font-normal: bold; color: #333; font-size: 0.9em;">${post.comment}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+                        <div class="card mb-3" style="padding: 10px;">
+                            <div class="row no-gutters">
+                                <div class="col-md-6">
+                                    <div class="image-container" onclick="viewImage('${post.image_url}')">
+                                        <img src="${post.image_url}" class="card-img" alt="Imagem da Postagem" style="max-height: 150px; object-fit: cover; width: 100%;">
+                                        <div class="overlay-text">Clique para expandir</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card-body" style="padding: 5px;">
+                                        <h6 class="card-title" style="margin-bottom: 0;">${post.username}</h6>
+                                        <p style="font-style: italic; margin-bottom: 5px; font-size: 0.8em;">${new Date(post.post_timestamp).toLocaleString()}</p>
+                                        <p class="card-text" style="font-normal: bold; color: #333; font-size: 0.9em;">${post.comment}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                     });
 
                     $('#posts').html(postsHtml);
@@ -90,10 +90,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             $('#modalImage').attr('src', imageUrl);
             $('#imageModal').modal('show');
         }
-        //responsavel por sempre manter os posts carregados, e dar um ar de "realtime"
+        // Carrega e atualiza posts na página a cada 5 segundos para um efeito de "tempo real".
         $(document).ready(function() {
-            loadPosts();
-            setInterval(loadPosts, 5000);
+            loadPosts(); // Carrega inicialmente
+            setInterval(loadPosts, 5000); // Atualiza a cada 5 segundos
         });
     </script>
     <!-- Modal para Visualização da Imagem -->
@@ -112,7 +112,6 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             </div>
         </div>
     </div>
-
 </body>
 
 </html>
