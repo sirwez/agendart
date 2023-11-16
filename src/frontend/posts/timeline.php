@@ -6,60 +6,43 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     die("Acesso negado!");
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendart</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php include '../partials/header.php'; ?>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Agendart</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto"> <!-- Links alinhados à esquerda -->
-            <?php if (isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/upload">Criar Postagem</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/timeline">Ver Timeline</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-        <ul class="navbar-nav"> <!-- Links alinhados à direita -->
-            <?php if (!isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/register-page">Registrar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/login-page">Login</a>
-                </li>
-            <?php else : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/logout">Deslogar</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </div>
-</nav>
+    <style>
+        /* Estilo para o container da imagem */
+        .image-container {
+            position: relative;
+            cursor: pointer;
+        }
 
+        /* Estilo para esmaecer a imagem */
+        .image-container img:hover {
+            opacity: 0.7;
+        }
+
+        /* Estilo para o texto de sobreposição */
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 1.2em;
+            display: none;
+        }
+
+        /* Mostrar texto quando o mouse passa por cima da imagem */
+        .image-container:hover .overlay-text {
+            display: block;
+        }
+    </style>
+    <?php include '../partials/navbar.php'; ?>
     <div class="container mt-4">
         <h2 class="mb-4">Sua Timeline</h2>
         <div id="posts"></div> <!-- Posts serão inseridos aqui -->
     </div>
-
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <?php include '../partials/footer.php'; ?>
     <script>
         function loadPosts() {
             $.ajax({
@@ -78,22 +61,26 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
                     var postsHtml = '';
                     posts.forEach(function(post) {
                         postsHtml += `
-                    <div class="card mb-3" style="padding: 10px;">
-                        <div class="row no-gutters">
-                            <div class="col-md-6">
-                                <img src="${post.image_url}" class="card-img" alt="Imagem da Postagem" style="max-height: 150px; object-fit: cover; width: 100%; cursor: pointer;" onclick="viewImage('${post.image_url}')">
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card-body" style="padding: 5px;">
-                                    <h6 class="card-title" style="margin-bottom: 0;">${post.username}</h6>
-                                    <p style="font-style: italic; margin-bottom: 5px; font-size: 0.8em;">${new Date(post.post_timestamp).toLocaleString()}</p>
-                                    <p class="card-text" style="font-normal: bold; color: #333; font-size: 0.9em;">${post.comment}</p>
-                                </div>
-                            </div>
-                        </div>
+        <div class="card mb-3" style="padding: 10px;">
+            <div class="row no-gutters">
+                <div class="col-md-6">
+                    <div class="image-container" onclick="viewImage('${post.image_url}')">
+                        <img src="${post.image_url}" class="card-img" alt="Imagem da Postagem" style="max-height: 150px; object-fit: cover; width: 100%;">
+                        <div class="overlay-text">Clique para expandir</div>
                     </div>
-                `;
+                </div>
+                <div class="col-md-6">
+                    <div class="card-body" style="padding: 5px;">
+                        <h6 class="card-title" style="margin-bottom: 0;">${post.username}</h6>
+                        <p style="font-style: italic; margin-bottom: 5px; font-size: 0.8em;">${new Date(post.post_timestamp).toLocaleString()}</p>
+                        <p class="card-text" style="font-normal: bold; color: #333; font-size: 0.9em;">${post.comment}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
                     });
+
                     $('#posts').html(postsHtml);
                 }
             });
@@ -103,7 +90,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             $('#modalImage').attr('src', imageUrl);
             $('#imageModal').modal('show');
         }
-
+        //responsavel por sempre manter os posts carregados, e dar um ar de "realtime"
         $(document).ready(function() {
             loadPosts();
             setInterval(loadPosts, 5000);

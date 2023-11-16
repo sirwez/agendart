@@ -4,47 +4,10 @@ session_start();
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendart</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php include '../partials/header.php'; ?>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Agendart</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto"> <!-- Links alinhados à esquerda -->
-            <?php if (isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/upload">Criar Postagem</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/timeline">Ver Timeline</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-        <ul class="navbar-nav"> <!-- Links alinhados à direita -->
-            <?php if (!isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/register-page">Registrar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/login-page">Login</a>
-                </li>
-            <?php else : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/logout">Deslogar</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </div>
-</nav>
+    <?php include '../partials/navbar.php'; ?>
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-6 col-12">
@@ -60,43 +23,90 @@ session_start();
                     </div>
                     <div class="form-group">
                         <label for="password">Senha:</label>
-                        <input type="password" name="password" class="form-control" required>
+                        <input type="password" name="password" class="form-control" id="passwordInput" required>
+                        <small id="passwordHelp" class="form-text text-muted"></small>
                     </div>
                     <button type="button" onclick="submitForm()" class="btn btn-primary btn-block">Registrar</button>
                 </form>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <?php include '../partials/footer.php'; ?>
     <script>
+        var isPasswordValid = false; // Estado inicial da validade da senha
+
+        $(document).ready(function() {
+            $("#passwordInput").keyup(function() {
+                var password = $(this).val();
+                validatePassword(password);
+            });
+        });
+
+        function validatePassword(password) {
+            var messages = [];
+            isPasswordValid = true; // Resetando para um estado válido inicial
+
+            if (password.length < 8) {
+                messages.push("A senha deve ter pelo menos 8 caracteres.");
+                isPasswordValid = false;
+            }
+            if (!/[A-Z]/.test(password)) {
+                messages.push("A senha deve conter pelo menos uma letra maiúscula.");
+                isPasswordValid = false;
+            }
+            if (!/\d/.test(password)) {
+                messages.push("A senha deve conter pelo menos um número.");
+                isPasswordValid = false;
+            }
+            if (!/[^a-zA-Z\d]/.test(password)) {
+                messages.push("A senha deve conter pelo menos um caractere especial.");
+                isPasswordValid = false;
+            }
+
+            $("#passwordHelp").html(messages.join("<br>"));
+        }
+
         function submitForm() {
-            var formData = {
-                username: $("input[name='username']").val(),
-                email: $("input[name='email']").val(),
-                password: $("input[name='password']").val()
-            };
+            if (!isPasswordValid) {
+                alert("Por favor, corrija os erros na senha antes de enviar.");
+                return;
+            }
+            var username = $("input[name='username']").val();
+            var email = $("input[name='email']").val();
+            var password = $("input[name='password']").val();
+
+            // Validar e-mail
+            if (!validateEmail(email)) {
+                alert("Por favor, insira um e-mail válido.");
+                return;
+            }
 
             $.ajax({
                 type: "POST",
-                url: "http://localhost/agendart/auth/register",
+                url: "http://localhost/agendart/auth/register", // Ajuste conforme o caminho correto do seu endpoint
                 data: {
-                    username: $("input[name='username']").val(),
-                    email: $("input[name='email']").val(),
-                    password: $("input[name='password']").val()
+                    username: username,
+                    email: email,
+                    password: password
                 },
-                success: function (response) {
-                    window.location.href = 'http://localhost/agendart/auth/login-page';
+                dataType: "json",
+                success: function(response) {
+                    if (response.error) {
+                        alert(response.message); // Exibe mensagem de erro
+                    } else {
+                        window.location.href = 'http://localhost/agendart/auth/login-page'; // Redireciona para login
+                    }
                 },
-
-
-                error: function (error) {
-                    console.log(error);
+                error: function(error) {
+                    console.error("Erro na requisição: ", error);
                 }
             });
         }
 
+        function validateEmail(email) {
+            var re = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            return re.test(String(email).toLowerCase());
+        }
     </script>
 </body>
 

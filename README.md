@@ -43,17 +43,18 @@ Agendart-Test/
 │   │   └── posts/           # Scripts para manipulação de postagens (buscar e postar imagens).
 │   └── frontend/
 │       ├── auth/            # Páginas de autenticação (login e registro).
-│       └── posts/           # Páginas relacionadas às postagens (timeline e upload).
-│      
+│       ├── posts/           # Páginas relacionadas às postagens (timeline e upload).
+│       └── partials/        # Componentes reutilizáveis do frontend.
+│
 └── index.php                # Ponto de entrada principal da aplicação.
 ```
 
 ## Rotas
 
 ### Autenticação
-- **/auth/login**: Rota para a página e ação de login.
+- **/auth/login**: Rota para a página e ação de login. Se o usuário digitar um email que não exista, exibe a mensagem "Usuário não encontrado". Se digitar a senha errada, aparece "Senha incorreta".
 - **/auth/logout**: Rota para a ação de logout.
-- **/auth/register**: Rota para a página e ação de registro.
+- **/auth/register**: Rota para a página e ação de registro. Na hora de se registrar, é feita validação de email e senha via regex. As regras para a senha são: mínimo de 8 caracteres, pelo menos 1 caractere especial, uma letra maiúscula e pelo menos 1 número.
 
 ### Postagens
 - **/posts/timeline**: Rota para visualizar a timeline.

@@ -6,50 +6,10 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
     die("Acesso negado!");
 }
 ?>
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Agendart</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-</head>
+<?php include '../partials/header.php'; ?>
 
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Agendart</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav mr-auto"> <!-- Links alinhados à esquerda -->
-            <?php if (isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/upload">Criar Postagem</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/posts/timeline">Ver Timeline</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-        <ul class="navbar-nav"> <!-- Links alinhados à direita -->
-            <?php if (!isset($_SESSION['loggedin'])) : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/register-page">Registrar</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/login-page">Login</a>
-                </li>
-            <?php else : ?>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost/agendart/auth/logout">Deslogar</a>
-                </li>
-            <?php endif; ?>
-        </ul>
-    </div>
-</nav>
+    <?php include '../partials/navbar.php'; ?>
     <div class="container">
         <h2 class="mt-5 mb-4 text-center">Faça seu comentário</h2>
         <form id="uploadForm" enctype="multipart/form-data">
@@ -64,10 +24,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             <button type="submit" class="btn btn-primary btn-block">Postar</button>
         </form>
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <?php include '../partials/footer.php'; ?>
     <script>
         $(document).ready(function() {
             $('#uploadForm').on('submit', function(e) {
