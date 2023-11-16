@@ -1,10 +1,5 @@
 <?php
 session_start();
-
-
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    die("Acesso negado!");
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -47,41 +42,57 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
         </div>
     </nav>
     <div class="container">
-        <h2 class="mt-5 mb-4 text-center">Faça seu comentário</h2>
-        <form id="uploadForm" enctype="multipart/form-data">
-            <div class="form-group">
-                <label for="image">Imagem:</label>
-                <input type="file" class="form-control-file" id="image" name="fileToUpload" required>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-12">
+                <form id="registerForm" class="mt-5">
+                    <h2 class="text-center">Registrar</h2>
+                    <div class="form-group">
+                        <label for="username">Nome de Usuário:</label>
+                        <input type="text" name="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" name="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Senha:</label>
+                        <input type="password" name="password" class="form-control" required>
+                    </div>
+                    <button type="button" onclick="submitForm()" class="btn btn-primary btn-block">Registrar</button>
+                </form>
             </div>
-            <div class="form-group">
-                <label for="comment">Comentário:</label>
-                <textarea class="form-control" id="comment" name="comment" rows="3" required></textarea>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Postar</button>
-        </form>
+        </div>
     </div>
-
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#uploadForm').on('submit', function(e) {
-                e.preventDefault();
-                var formData = new FormData(this);
+        function submitForm() {
+            var formData = {
+                username: $("input[name='username']").val(),
+                email: $("input[name='email']").val(),
+                password: $("input[name='password']").val()
+            };
 
-                $.ajax({
-                    type: 'POST',
-                    url: 'http://localhost/agendart/posts/post-image',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        alert(response);
-                    }
-                });
+            $.ajax({
+                type: "POST",
+                url: "http://localhost/agendart/auth/register",
+                data: {
+                    username: $("input[name='username']").val(),
+                    email: $("input[name='email']").val(),
+                    password: $("input[name='password']").val()
+                },
+                success: function (response) {
+                    window.location.href = 'http://localhost/agendart/auth/login-page';
+                },
+
+
+                error: function (error) {
+                    console.log(error);
+                }
             });
-        });
+        }
+
     </script>
 </body>
 

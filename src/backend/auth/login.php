@@ -1,7 +1,7 @@
 <?php
-require 'C:\xampp\htdocs\agendart\config\config.php';
+require_once '../../../config/config.php';
 session_start();
-
+$response = ["success" => false, "message" => ""];
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $email = $conn->real_escape_string($_POST['email']);
@@ -18,14 +18,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['loggedin'] = true;
             $_SESSION['username'] = $row['username'];
             $_SESSION['user_id'] = $row['id'];
-            echo "Bem-vindo " . $row['username'] . "!";
+            $response = ["success" => true, "message" => "Bem-vindo " . $row['username'] . "!"];
         } else {
-            // Senha incorreta
-            echo "Senha incorreta!";
+            $response = ["success" => false, "message" => "Senha incorreta!"];
         }
     } else {
-        echo "Usuário não encontrado.";
+        $response = ["success" => false, "message" => "Usuário não encontrado."];
     }
     $conn->close();
 }
+echo json_encode($response);
 ?>

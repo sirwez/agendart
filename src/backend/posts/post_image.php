@@ -1,5 +1,5 @@
 <?php
-require 'C:\xampp\htdocs\agendart\config\config.php';
+require_once '../../../config/config.php';
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -14,8 +14,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         mkdir($target_dir, 0777, true);
     }
 
-    // Define o caminho do arquivo
+    // Define o caminho do arquivo para salvar no sistema de arquivos
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+
+    // Define o caminho do arquivo para salvar no banco de dados
+    $db_path = "../../agendart/public/uploads/" . basename($_FILES["fileToUpload"]["name"]);
+
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -39,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $user_id = $_SESSION['user_id']; // Assumindo que você armazena o ID do usuário na sessão
 
             // Inserir no banco de dados
-            $sql = "INSERT INTO posts (user_id, image_url, comment, post_timestamp) VALUES ('$user_id', '$target_file', '$comment', NOW())";
+            $sql = "INSERT INTO posts (user_id, image_url, comment, post_timestamp) VALUES ('$user_id', '$db_path', '$comment', NOW())";
             if ($conn->query($sql) === TRUE) {
                 echo "Postagem criada com sucesso.";
             } else {

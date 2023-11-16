@@ -4,17 +4,19 @@ RewriteBase /agendart/
 # Ignorar diretórios e arquivos existentes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-# Redireciona a URL raiz para index.php
-RewriteRule ^$ index.php [L]
+
+# Redireciona a URL raiz para a página de login
+RewriteRule ^$ src/frontend/auth/login.php [L]
 
 # Redireciona URLs amigáveis para o backend
 RewriteRule ^auth/login$ src/backend/auth/login.php [L]
+RewriteRule ^auth/logout$ src/backend/auth/logout.php [L]
 RewriteRule ^auth/register$ src/backend/auth/register.php [L]
 RewriteRule ^posts/fetch$ src/backend/posts/fetch_posts.php [L]
 RewriteRule ^posts/post-image$ src/backend/posts/post_image.php [L]
 
 # Redireciona URLs amigáveis para o frontend
-RewriteRule ^auth/login-page$ src/frontend/auth/login.html [L]
-RewriteRule ^auth/register-page$ src/frontend/auth/register.html [L]
+RewriteRule ^auth/login-page$ src/frontend/auth/login.php [L]
+RewriteRule ^auth/register-page$ src/frontend/auth/register.php [L]
 RewriteRule ^posts/timeline$ src/frontend/posts/timeline.php [L]
 RewriteRule ^posts/upload$ src/frontend/posts/upload.php [L]
