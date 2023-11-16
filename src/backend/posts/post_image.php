@@ -9,7 +9,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Verifica se o diretório de upload existe, se não, cria
-    $target_dir = "../../public/uploads/";
+    $target_dir = "../../../public/uploads/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
