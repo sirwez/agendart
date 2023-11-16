@@ -6,7 +6,7 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
 # Redireciona a URL raiz para a página de login
-RewriteRule ^$ src/frontend/auth/login.php [L]
+RewriteRule ^$ index.php [L]
 
 # Redireciona URLs amigáveis para o backend
 RewriteRule ^auth/login$ src/backend/auth/login.php [L]

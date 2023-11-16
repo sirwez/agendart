@@ -8,18 +8,22 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+    // Define a URL base dinamicamente
+    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+    $domainName = $_SERVER['HTTP_HOST'];
+    $baseUrl = $protocol . $domainName;
+
+    // Define o caminho relativo para o diretório de uploads
+    $uploadPath = '/agendart/public/uploads/';
+
     // Verifica se o diretório de upload existe, se não, cria
-    $target_dir = "../../../public/uploads/";
+    $target_dir = realpath(__DIR__ . '/../../../public/uploads/') . '/';
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }
 
-    // Define o caminho do arquivo para salvar no sistema de arquivos
+    // Define o caminho do arquivo no servidor
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
-
-    // Define o caminho do arquivo para salvar no banco de dados
-    $db_path = "../../agendart/public/uploads/" . basename($_FILES["fileToUpload"]["name"]);
-
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
@@ -39,11 +43,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
             echo "A imagem ". htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " foi carregada.";
+
+            // Define a URL da imagem para armazenar no banco de dados
+            $image_url = $baseUrl . $uploadPath . basename($_FILES["fileToUpload"]["name"]);
+
             $comment = $conn->real_escape_string($_POST['comment']);
             $user_id = $_SESSION['user_id']; // Assumindo que você armazena o ID do usuário na sessão
 
             // Inserir no banco de dados
-            $sql = "INSERT INTO posts (user_id, image_url, comment, post_timestamp) VALUES ('$user_id', '$db_path', '$comment', NOW())";
+            $sql = "INSERT INTO posts (user_id, image_url, comment, post_timestamp) VALUES ('$user_id', '$image_url', '$comment', NOW())";
             if ($conn->query($sql) === TRUE) {
                 echo "Postagem criada com sucesso.";
             } else {
