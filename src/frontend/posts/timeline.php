@@ -1,21 +1,9 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header("Location: login.html");
-    exit;
-}
-
-?>
-
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Linha do Tempo</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
-
 <body>
     <div class="container">
         <h2>Linha do Tempo</h2>
@@ -28,7 +16,7 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             function loadPosts() {
                 $.ajax({
                     type: 'GET',
-                    url: 'fetch_posts.php',
+                    url: 'http://localhost/agendart/src/backend/posts/fetch_posts.php',
                     success: function(response) {
                         $('#posts').html(response);
                     }
@@ -36,8 +24,8 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
             }
 
             loadPosts(); // Carrega as postagens quando a página é carregada
+            setInterval(loadPosts, 5000); // Carrega as postagens a cada 5 segundos
         });
     </script>
 </body>
-
 </html>

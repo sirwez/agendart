@@ -31,7 +31,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'post_image.php',
+                    url: 'http://localhost/agendart/src/backend/posts/post_image.php',
                     data: formData,
                     contentType: false,
                     processData: false,

@@ -1,4 +1,5 @@
 <?php
+require 'C:\xampp\htdocs\agendart\config\config.php';
 session_start();
 
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
@@ -6,14 +7,9 @@ if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conexão com o banco de dados
-    $conn = new mysqli("localhost", "root", "", "agendart");
-    if ($conn->connect_error) {
-        die("Falha na conexão: " . $conn->connect_error);
-    }
 
     // Verifica se o diretório de upload existe, se não, cria
-    $target_dir = "uploads/";
+    $target_dir = "../../public/uploads/";
     if (!file_exists($target_dir)) {
         mkdir($target_dir, 0777, true);
     }

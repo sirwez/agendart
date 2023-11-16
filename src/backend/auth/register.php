@@ -1,12 +1,7 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conexão com o banco de dados
-    $conn = new mysqli("localhost", "root", "", "agendart");
+require 'C:\xampp\htdocs\agendart\config\config.php';
 
-    // Verifica a conexão
-    if ($conn->connect_error) {
-        die("Falha na conexão: " . $conn->connect_error);
-    }
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     // Limpa os dados de entrada
     $username = $conn->real_escape_string($_POST['username']);
@@ -16,7 +11,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Insere no banco de dados
     $sql = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
     if ($conn->query($sql) === TRUE) {
-        echo "Usuário registrado com sucesso.";
+        // Redireciona para a página de login após o sucesso
+        header("Location: http://localhost/agendart/src/frontend/auth/login.html");
+        exit();
     } else {
         echo "Erro: " . $sql . "<br>" . $conn->error;
     }

@@ -1,14 +1,8 @@
 <?php
+require 'C:\xampp\htdocs\agendart\config\config.php';
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Conexão com o banco de dados
-    $conn = new mysqli("localhost", "root", "", "agendart");
-
-    // Verifica a conexão
-    if ($conn->connect_error) {
-        die("Falha na conexão: " . $conn->connect_error);
-    }
 
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
