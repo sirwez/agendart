@@ -52,11 +52,26 @@ Agendart-Test/
 ## Rotas
 
 ### Autenticação
-- **/auth/login**: Rota para a página e ação de login. Se o usuário digitar um email que não exista, exibe a mensagem "Usuário não encontrado". Se digitar a senha errada, aparece "Senha incorreta".
-- **/auth/logout**: Rota para a ação de logout.
-- **/auth/register**: Rota para a página e ação de registro. Na hora de se registrar, é feita validação de email e senha via regex. As regras para a senha são: mínimo de 8 caracteres, pelo menos 1 caractere especial, uma letra maiúscula e pelo menos 1 número.
-
+- **Frontend**:
+  - **/auth/login-page**: Página de login. Permite ao usuário inserir credenciais para acessar a plataforma.
+  - **/auth/register-page**: Página de registro. Permite ao novo usuário criar uma conta. Realiza validação de e-mail e senha via regex.
+    - **Validação de Senha**: Mínimo de 8 caracteres, pelo menos 1 caractere especial, uma letra maiúscula e pelo menos 1 número.
+- **Backend**:
+  - **/auth/login**:
+    - **Função**: Processa a ação de login.
+    - **Comportamento**: Se o e-mail não existir no sistema, exibe "Usuário não encontrado". Se a senha estiver incorreta, exibe "Senha incorreta".
+  - **/auth/logout**:
+    - **Função**: Processa a ação de logout, encerrando a sessão do usuário.
+  - **/auth/register**:
+    - **Função**: Processa a ação de registro.
+    - **Comportamento**: Se o e-mail existir no sistema, exibe "Email já cadastrado".
 ### Postagens
-- **/posts/timeline**: Rota para visualizar a timeline.
-- **/posts/upload**: Rota para a página de upload de imagens.
-- **/posts/fetch**: Rota para buscar as postagens.
+- **Frontend**:
+  - **/posts/timeline**: Página da timeline. Mostra as postagens e as atualiza a cada 5 segundos.
+  - **/posts/upload**: Página de upload de imagem. Permite ao usuário enviar uma imagem e um comentário.
+
+- **Backend**:
+  - **/posts/fetch**:
+    - **Função**: Busca as postagens para exibição na timeline.
+  - **/posts/post-image**:
+    - **Função**: Processa o envio de uma nova postagem (imagem e comentário).
