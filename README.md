@@ -64,7 +64,7 @@ Agendart-Test/
     - **Função**: Processa a ação de logout, encerrando a sessão do usuário.
   - **/auth/register**:
     - **Função**: Processa a ação de registro.
-    - **Comportamento**: Se o e-mail existir no sistema, exibe "Email já cadastrado".
+    - **Comportamento**: Verifica duplicidade de e-mail e aplica hashing na senha antes do armazenamento.
 ### Postagens
 - **Frontend**:
   - **/posts/timeline**: Página da timeline. Mostra as postagens e as atualiza a cada 5 segundos.
