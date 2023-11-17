@@ -29,10 +29,11 @@ Para iniciar a aplicação:
 2. Acesse a aplicação através do navegador em `http://localhost/agendart`.
 
 ## Estrutura do Projeto
-A estrutura do projeto está organizada da seguinte forma:
+
+A estrutura do projeto AgendaArt Timeline está organizada da seguinte forma, proporcionando uma clara separação de funcionalidades e facilitando a manutenção:
 
 ```
-Agendart-Test/
+Agendart/
 ├── config/
 │   └── config.php           # Configurações do banco de dados.
 ├── public/
@@ -48,6 +49,28 @@ Agendart-Test/
 │
 └── index.php                # Ponto de entrada principal da aplicação.
 ```
+
+### Organização das Páginas
+
+#### Autenticação
+- **Frontend**:
+  - **Login (`/auth/login-page`)**: Interface para os usuários inserirem suas credenciais e acessarem a plataforma.
+  - **Registro (`/auth/register-page`)**: Formulário para novos usuários criarem uma conta, com validação de e-mail e senha.
+- **Backend**:
+  - **Login (`/auth/login`)**: Processamento das credenciais de login e verificação no banco de dados.
+  - **Logout (`/auth/logout`)**: Gerencia o encerramento de sessões ativas.
+  - **Registro (`/auth/register`)**: Criação de novos usuários com verificação de e-mail e armazenamento seguro de senha.
+
+#### Postagens
+- **Frontend**:
+  - **Timeline (`/posts/timeline`)**: Exibe as postagens dos usuários e atualiza automaticamente para mostrar novas postagens.
+  - **Upload de Imagem (`/posts/upload`)**: Permite aos usuários enviar novas imagens e comentários.
+- **Backend**:
+  - **Fetch Postagens (`/posts/fetch`)**: Recupera as postagens do banco de dados para exibição na timeline.
+  - **Postagem de Imagem (`/posts/post-image`)**: Gerencia o upload de novas postagens (imagens e comentários) para o banco de dados.
+
+### Partials
+- **Reutilização de Componentes**: A pasta `partials` dentro do `frontend` contém elementos reutilizáveis, como cabeçalhos e rodapés, garantindo a consistência visual e funcional em toda a aplicação.
 
 ## Rotas
 
